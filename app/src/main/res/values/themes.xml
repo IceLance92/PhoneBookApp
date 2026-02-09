@@ -1,0 +1,24 @@
+<resources>
+    <style name="Theme.PhoneBook"
+        parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primaryDark</item>
+        <item name="colorSecondary">@color/secondary</item>
+
+        <item name="android:statusBarColor">
+            @android:color/transparent
+        </item>
+    </style>
+
+    <style name="RoundedCard" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Circular" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+</resources>

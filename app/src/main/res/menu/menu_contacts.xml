@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_import"
+        android:title="Импорт из телефона"
+        android:icon="@android:drawable/ic_menu_upload"
+        android:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_sort"
+        android:title="Сортировка"
+        android:icon="@android:drawable/ic_menu_sort_alphabetically"
+        android:showAsAction="never">
+        <menu>
+            <item android:id="@+id/sort_az" android:title="Имя A→Z" />
+            <item android:id="@+id/sort_za" android:title="Имя Z→A" />
+            <item android:id="@+id/sort_recent" android:title="Недавно добавленные" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_admin_users"
+        android:title="Пользователи"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_admin_create_user"
+        android:title="Создать пользователя"
+        android:icon="@android:drawable/ic_menu_add"
+        android:showAsAction="ifRoom"/>
+</menu>
