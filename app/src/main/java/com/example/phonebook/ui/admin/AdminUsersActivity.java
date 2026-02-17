@@ -34,9 +34,20 @@ public class AdminUsersActivity extends AppCompatActivity {
         b.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material);
         b.toolbar.setNavigationOnClickListener(v -> finish());
 
-        UserListAdapter adapter = new UserListAdapter(u ->
-                Toast.makeText(this, "Пользователь: " + u.username + " (только просмотр)", Toast.LENGTH_SHORT).show()
-        );
+        UserListAdapter adapter = new UserListAdapter(u -> {
+            String[] items = new String[]{"Сменить пароль"};
+
+            new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                    .setTitle("Пользователь: " + u.username)
+                    .setItems(items, (d, which) -> {
+                        if (which == 0) {
+                            ChangePasswordDialog.forUser(u.id, u.username)
+                                    .show(getSupportFragmentManager(), "chg_pwd");
+                        }
+                    })
+                    .setNegativeButton("Отмена", (d,w) -> {})
+                    .show();
+        });
         b.recycler.setLayoutManager(new LinearLayoutManager(this));
         b.recycler.setAdapter(adapter);
 

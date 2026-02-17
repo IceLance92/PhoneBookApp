@@ -34,4 +34,8 @@ public class AdminUsersViewModel extends AndroidViewModel {
             return repo.observeSearchUsers("%" + q + "%");
         });
     }
+
+    public void changePassword(long userId, String newPassword, PhoneBookRepository.ChangePasswordCallback cb) {
+        repo.adminChangeUserPassword(userId, newPassword, cb);
+    }
 }

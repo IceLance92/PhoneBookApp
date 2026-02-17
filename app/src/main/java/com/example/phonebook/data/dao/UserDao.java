@@ -28,4 +28,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE username LIKE :q ORDER BY username COLLATE NOCASE ASC")
     LiveData<List<User>> observeSearchUsers(String q);
+
+    @Query("UPDATE users SET passwordHash = :hash WHERE id = :userId")
+    int updatePasswordHash(long userId, String hash);
 }

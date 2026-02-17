@@ -101,6 +101,25 @@ public class PhoneBookRepository {
         });
     }
 
+    public interface ChangePasswordCallback { void onResult(boolean ok, String message); }
+
+    public void adminChangeUserPassword(long userId, String newPlainPassword, ChangePasswordCallback cb) {
+        io.execute(() -> {
+            try {
+                String p = (newPlainPassword == null) ? "" : newPlainPassword.trim();
+                if (p.length() < 6) {
+                    if (cb != null) cb.onResult(false, "Пароль должен быть минимум 6 символов");
+                    return;
+                }
+                String hash = PasswordUtil.sha256(p);
+                int updated = userDao.updatePasswordHash(userId, hash);
+                if (cb != null) cb.onResult(updated > 0, updated > 0 ? "Пароль изменён" : "Пользователь не найден");
+            } catch (Exception e) {
+                if (cb != null) cb.onResult(false, "Ошибка: " + e.getMessage());
+            }
+        });
+    }
+
     public LiveData<List<Contact>> observeContacts(SortMode mode) {
         if (mode == SortMode.NAME_DESC) return contactDao.observeAllDesc();
         if (mode == SortMode.RECENT) return contactDao.observeRecent();
@@ -185,7 +204,6 @@ public class PhoneBookRepository {
         });
     }
 
-    // Admin users list
     public LiveData<List<User>> observeAllUsers() { return userDao.observeAllUsers(); }
     public LiveData<List<User>> observeSearchUsers(String q) { return userDao.observeSearchUsers(q); }
 }
