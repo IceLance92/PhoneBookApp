@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.phonebook.PhotoStorage;
 import com.example.phonebook.auth.SessionManager;
 import com.example.phonebook.data.entity.Contact;
 import com.example.phonebook.data.repo.PhoneBookRepository;
@@ -35,8 +36,14 @@ public class EditMyContactDialog extends DialogFragment {
     private final ActivityResultLauncher<String> pickImage =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
-                    selectedPhoto = uri;
-                    Toast.makeText(requireContext(), "Фото выбрано", Toast.LENGTH_SHORT).show();
+                    try {
+                        selectedPhoto = uri;
+                        String savedPath = PhotoStorage.saveToAppStorage(requireContext(), uri);
+                        selectedPhoto = Uri.parse(savedPath); // теперь это file://... или абсолютный путь
+                        Toast.makeText(requireContext(), "Фото сохранено", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(requireContext(), "Не удалось сохранить фото", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
