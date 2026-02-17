@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.phonebook.auth.SessionManager;
 import com.example.phonebook.databinding.ActivityAdminUsersBinding;
@@ -36,6 +37,7 @@ public class AdminUsersActivity extends AppCompatActivity {
         UserListAdapter adapter = new UserListAdapter(u ->
                 Toast.makeText(this, "Пользователь: " + u.username + " (только просмотр)", Toast.LENGTH_SHORT).show()
         );
+        b.recycler.setLayoutManager(new LinearLayoutManager(this));
         b.recycler.setAdapter(adapter);
 
         AdminUsersViewModel vm = new ViewModelProvider(this).get(AdminUsersViewModel.class);

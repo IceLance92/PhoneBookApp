@@ -69,6 +69,26 @@ public class PhoneBookRepository {
         });
     }
 
+    public void ensureContactsForAllUsers() {
+        io.execute(() -> {
+            List<User> users = userDao.getAllUsers();
+            for (User u : users) {
+                Contact existing = contactDao.findByOwner(u.id);
+                if (existing == null) {
+                    Contact c = new Contact();
+                    c.name = u.username;
+                    c.phone = "_";
+                    c.email = "";
+                    c.note = "";
+                    c.photoUri = "";
+                    c.ownerUserId = u.id;
+                    c.createdAt = System.currentTimeMillis();
+                    contactDao.insert(c);
+                }
+            }
+        });
+    }
+
     public interface LoginCallback { void onResult(User user); }
 
     public void login(String username, String plainPassword, LoginCallback cb) {
@@ -105,20 +125,27 @@ public class PhoneBookRepository {
 
     public interface UpdateCallback { void onResult(boolean ok); }
 
-    public void updateMyContact(long contactId, long currentUserId,
+    public void updateMyContact(long contactId, long currentUserId, boolean admin,
                                 String name, String phone, String email, String note, String photoUri,
                                 UpdateCallback cb) {
         io.execute(() -> {
-            int updated = contactDao.updateIfOwner(contactId, currentUserId, name, phone, email, note, photoUri);
+            int updated = admin
+                    ? contactDao.updateAsAdmin(contactId, name, phone, email, note, photoUri)
+                    : contactDao.updateIfOwner(contactId, currentUserId, name, phone, email, note, photoUri);
+
             if (cb != null) cb.onResult(updated > 0);
         });
     }
 
+
     public interface DeleteCallback { void onResult(boolean ok); }
 
-    public void deleteMyContact(long contactId, long currentUserId, DeleteCallback cb) {
+    public void deleteMyContact(long contactId, long currentUserId, boolean admin, DeleteCallback cb) {
         io.execute(() -> {
-            int d = contactDao.deleteIfOwner(contactId, currentUserId);
+            int d = admin
+                    ? contactDao.deleteAsAdmin(contactId)
+                    : contactDao.deleteIfOwner(contactId, currentUserId);
+
             if (cb != null) cb.onResult(d > 0);
         });
     }

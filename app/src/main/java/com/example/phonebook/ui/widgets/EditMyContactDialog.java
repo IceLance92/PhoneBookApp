@@ -123,11 +123,13 @@ public class EditMyContactDialog extends DialogFragment {
                             dismiss();
                         } else {
                             long contactId = args.getLong(ARG_ID);
-                            repo.updateMyContact(contactId, session.userId(), name, phone, email, note, photoUri, ok -> {
-                                Bundle res = new Bundle();
-                                res.putBoolean(RES_OK, ok);
-                                getParentFragmentManager().setFragmentResult(REQ_KEY, res);
-                            });
+                            repo.updateMyContact(contactId, session.userId(), session.isAdmin(),
+                                    name, phone, email, note, photoUri, ok -> {
+                                        Bundle res = new Bundle();
+                                        res.putBoolean(RES_OK, ok);
+                                        getParentFragmentManager().setFragmentResult(REQ_KEY, res);
+                                    }
+                            );
                             dismiss();
                         }
                     });

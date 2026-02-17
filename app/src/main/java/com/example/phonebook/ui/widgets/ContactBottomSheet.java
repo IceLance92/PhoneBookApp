@@ -72,7 +72,7 @@ public class ContactBottomSheet extends BottomSheetDialogFragment {
             b.tvName.setText("—");
             b.tvPhone.setText("—");
             b.tvEmail.setText("—");
-            b.tvNote.setText("Админ может добавлять контакты. Редактировать можно только свою запись.");
+            b.tvNote.setText("Администратор может добавлять и редактировать любые контакты. Пользователь редактирует только свою запись.");
             b.btnCall.setVisibility(View.GONE);
             b.btnSms.setVisibility(View.GONE);
             b.btnDelete.setVisibility(View.GONE);
@@ -138,10 +138,10 @@ public class ContactBottomSheet extends BottomSheetDialogFragment {
                 .setNegativeButton("Отмена", (d,w) -> {})
                 .setPositiveButton("Удалить", (d,w) -> {
                     PhoneBookRepository repo = new PhoneBookRepository(requireContext());
-                    repo.deleteMyContact(id, session.userId(), ok ->
+                    repo.deleteMyContact(id, session.userId(), session.isAdmin(), ok ->
                             requireActivity().runOnUiThread(() -> {
                                 Toast.makeText(requireContext(),
-                                        ok ? "Удалено" : "Удаление запрещено (можно только себя)",
+                                        ok ? "Удалено" : "Удаление запрещено (недостаточно прав)",
                                         Toast.LENGTH_SHORT).show();
                                 dismiss();
                             })

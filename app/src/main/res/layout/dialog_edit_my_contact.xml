@@ -61,7 +61,7 @@
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNote"
-                android:hint="Заметка"
+                android:hint="Заметка/должность"
                 android:minLines="2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

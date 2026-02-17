@@ -20,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         b = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(b.getRoot());
 
@@ -27,7 +28,12 @@ public class LoginActivity extends AppCompatActivity {
         session = new SessionManager(this);
 
         b.progress.setVisibility(View.VISIBLE);
-        repo.seedIfEmpty(() -> runOnUiThread(() -> b.progress.setVisibility(View.GONE)));
+
+        // Инициализация БД один раз
+        repo.seedIfEmpty(() -> {
+            repo.ensureContactsForAllUsers();
+            runOnUiThread(() -> b.progress.setVisibility(View.GONE));
+        });
 
         b.btnLogin.setOnClickListener(v -> doLogin());
         b.btnRegister.setOnClickListener(v -> startActivity(new Intent(this, RegisterActivity.class)));

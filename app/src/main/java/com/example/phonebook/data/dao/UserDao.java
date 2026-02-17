@@ -20,6 +20,9 @@ public interface UserDao {
     @Query("SELECT COUNT(*) FROM users")
     int countUsers();
 
+    @Query("SELECT * FROM users")
+    List<User> getAllUsers();
+
     @Query("SELECT * FROM users ORDER BY username COLLATE NOCASE ASC")
     LiveData<List<User>> observeAllUsers();
 

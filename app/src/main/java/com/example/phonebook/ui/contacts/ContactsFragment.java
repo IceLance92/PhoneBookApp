@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.phonebook.R;
 import com.example.phonebook.auth.SessionManager;
@@ -34,12 +35,14 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        new PhoneBookRepository(requireContext()).ensureContactsForAllUsers();
         b = FragmentContactsBinding.bind(view);
 
         session = new SessionManager(requireContext());
         vm = new ViewModelProvider(this).get(ContactsViewModel.class);
 
         adapter = new ContactsAdapter(this::openContact);
+        b.recycler.setLayoutManager(new LinearLayoutManager(requireContext()));
         b.recycler.setAdapter(adapter);
 
         // Single observer
@@ -50,6 +53,7 @@ public class ContactsFragment extends Fragment {
             int pos = adapter.positionForLetter(letter);
             if (pos >= 0) b.recycler.scrollToPosition(pos);
         });
+
 
         // toolbar actions
         b.toolbar.getMenu().findItem(R.id.action_admin_create_user).setVisible(session.isAdmin());
@@ -99,7 +103,7 @@ public class ContactsFragment extends Fragment {
     }
 
     private void openContact(Contact c) {
-        boolean canEdit = (c.ownerUserId == session.userId());
+        boolean canEdit = session.isAdmin() || (c.ownerUserId == session.userId());
         ContactBottomSheet.show(c, canEdit).show(getParentFragmentManager(), "contact_sheet");
     }
 }

@@ -43,7 +43,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textview.MaterialTextView
-                android:text="Имя"
+                android:text="Имя и фамилия"
                 android:alpha="0.7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -82,7 +82,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_marginTop="10dp"
-                android:text="Заметка"
+                android:text="Заметка/должность"
                 android:alpha="0.7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

@@ -1,6 +1,7 @@
 package com.example.phonebook.data.entity;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
@@ -16,6 +17,7 @@ public class Contact {
 
     @NonNull
     public String phone;
+
 
     public String email;
     public String note;
